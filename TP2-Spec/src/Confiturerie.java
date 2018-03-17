@@ -9,7 +9,7 @@ public class Confiturerie {
 	static final int E = 2; //Le nombre d'étiquetage
 	
 	
-	public static void main() {
+	public static void main(String[] args) {
 		for (int i = 0; i < N; i ++) {
 			Bocal a = new Bocal(V, E, S.a, i);
 			Bocal b = new Bocal(V, E, S.b, i);
