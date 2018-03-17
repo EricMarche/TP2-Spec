@@ -34,12 +34,12 @@ public class Bocal extends Thread {
 	}
 	
 	public void requeteValve() {
-		System.out.println("Requete valve");
+		System.out.println(this.index + "." + this.type + ".RequeteValve");
 		
 	}
 	
 	public void requeteEtiquetage() {
-		System.out.println("Requette etiquette");
+		System.out.println(this.index + "." + this.type + ".RequeteEtiquette");
 		commenceEtiquetage();
 	}
 
@@ -50,7 +50,7 @@ public class Bocal extends Thread {
 			synchronized (valve) {
 				indexValve = valve.prendre();
 				if (indexValve != -1) {
-					System.out.println("Ouvre valve");
+					System.out.println(this.index + "." + this.type + ".OuvreValve ");
 					
 				}
 				else {
@@ -66,13 +66,13 @@ public class Bocal extends Thread {
 	}
 	
 	public void remplit() {
-		System.out.println("remplit");
+		System.out.println(this.index + "." + this.type + ".remplit");
 	}
 	
 	public void fermeValve() {
 		synchronized(valve) {
 			valve.rendre();
-			System.out.println("Ferme valve");
+			System.out.println(this.index + "." + this.type + ".FermeValve");
 		}
 	}
 	
@@ -80,9 +80,9 @@ public class Bocal extends Thread {
 		int indexEtiquetage = -1;
 		while (indexEtiquetage == -1) {
 			synchronized (etiquetage) {
-				indexEtiquetage = valve.prendre();
+				indexEtiquetage = etiquetage.prendre();
 				if (indexEtiquetage != -1) {
-					System.out.println("Commence etiquetage");
+					System.out.println(this.index + "." + this.type + ".CommenceEtiquetage");
 					
 				}
 				else {
@@ -98,13 +98,13 @@ public class Bocal extends Thread {
 	}
 	
 	public void etiquette() {
-		System.out.println("Etiquette");
+		System.out.println(this.index + "." + this.type + ".Etiquette");
 	}
 	
 	public void termineEtiquetage() {
 		synchronized(etiquetage) {
 			etiquetage.rendre();
-			System.out.println("Termine etiquetage");
+			System.out.println(this.index + "." + this.type + ".TermineEtiquetage");
 		}
 	}
 	

@@ -32,6 +32,7 @@ public class Ressource {
 		for(int i = 0; i < nombre; i++) {
 			if (disponibilite.get(i)) {
 				this.disponibilite.set(i, false);
+				//System.out.println("Prendre ressource " + this.getNom() + i);
 				return i;
 			}
 		}
@@ -43,6 +44,7 @@ public class Ressource {
 		for (int i = 0; i < nombre; i++) {
 			if (!this.disponibilite.get(i)) {
 				this.disponibilite.set(i, true);
+				//System.out.println("Rendre ressource " + this.getNom() + i);
 				return;
 			}
 		}

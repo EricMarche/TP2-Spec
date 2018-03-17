@@ -10,7 +10,7 @@ public class Confiturerie {
 	
 	
 	public static void main(String[] args) {
-		for (int i = 0; i < N; i ++) {
+		for (int i = 1; i <= N; i ++) {
 			Bocal a = new Bocal(V, E, S.a, i);
 			Bocal b = new Bocal(V, E, S.b, i);
 			

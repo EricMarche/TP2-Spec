@@ -1,0 +1,4 @@
+Eric Marchessault (111 156 117)
+Sebastien Labrie (111 086 636)
+
+Nous n'avons pas d'interface graphique. Donc si vous voulez changer des variables de bocaux, valve ou etiquetage. Il faut changer les constante du fichier Confiturerie.java. Nous avons garder les noms des variable du premier TP. C'est-à-dire N, V, E
