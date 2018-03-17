@@ -1,8 +1,9 @@
 
-public class Valve {
+public class Valves extends Ressource{
 
 	int nbValve;
-	public Valve(int nbValve) {
+	public Valves(int nbValve) {
+		super("valve", nbValve);
 		this.nbValve = nbValve;
 	}
 	
@@ -18,4 +19,5 @@ public class Valve {
 		System.out.println("Fermer valve");
 		
 	}
+	
 }

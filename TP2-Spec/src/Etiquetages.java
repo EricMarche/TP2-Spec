@@ -1,8 +1,9 @@
 
-public class Etiquetage {
+public class Etiquetages extends Ressource {
 	
 	int nbEtiquetage;
-	public Etiquetage(int nbEtiquetage) {
+	public Etiquetages(int nbEtiquetage) {
+		super("etiquetage", nbEtiquetage);
 		this.nbEtiquetage = nbEtiquetage;
 	}
 	
