@@ -1,0 +1,240 @@
+const N = 3
+range R = 1..N
+range R0 = 0..N
+set  S = {a,b}
+
+const  T = 2
+range RT = 1..T
+
+
+const V = 2
+range RV = 1..V
+
+const E = 2
+range RE = 1..E
+
+
+
+
+
+
+
+Bocal=  ( ouvreValve -> remplit  ->  fermeValve ->  
+         commenceEtiquetage -> etiquette -> termineEtiquetage -> Bocal).
+
+
+
+
+
+Valve= (ouvreValve -> fermeValve  -> Valve).
+
+Etiquetage = (commenceEtiquetage -> termineEtiquetage -> Etiquetage). 
+
+
+
+||Confiturerie0 = (Bocal  ||  Valve || Etiquetage).
+
+
+//Question 1 
+
+||Confiturerie1 = ( [i:S]:Bocal ||  [i:S]::Valve || [i:S]::Etiquetage).
+
+
+//Question 2 
+
+||Confiturerie2 = ([i:R][j:S]:Bocal ||  [i:R][j:S]::Valve || [i:R][j:S]::Etiquetage).
+
+
+
+//Question 3 
+
+
+property PValve = Acq[0], 
+Acq[n:0..V] = (when (n < V ) [i:R].[j:S].ouvreValve  -> Acq[n+1] 
+                  | when (n > 0)  [k:R].[l:S].fermeValve -> Acq[n-1]
+                  ).
+
+property PEtiquetage = Acq[0], 
+Acq[n:0..V] = (when (n < E ) [i:R].[j:S].commenceEtiquetage -> Acq[n+1] 
+                  | when (n > 0)  [k:R].[l:S].termineEtiquetage -> Acq[n-1]
+                  ).
+
+
+
+
+||Confiturerie3 = ([i:R][j:S]:Bocal ||       
+                   PValve || PEtiquetage ).
+
+
+
+
+//Question 4
+
+
+ CValve = Acq[0], 
+Acq[n:0..V] = (when (n < V ) [i:R].[j:S].ouvreValve  -> Acq[n+1] 
+                  | when (n > 0)  [k:R].[l:S].fermeValve -> Acq[n-1]
+                  ).
+
+
+CEtiquetage = Acq[0], 
+Acq[n:0..V] = (when (n < E ) [i:R].[j:S].commenceEtiquetage -> Acq[n+1] 
+                  | when (n > 0)  [k:R].[l:S].termineEtiquetage -> Acq[n-1]
+                  ).
+
+
+
+
+
+
+
+
+||Confiturerie4 = ([i:R][j:S]:Bocal ||
+                                CValve || CEtiquetage  || 
+                                PValve || PEtiquetage  ). 
+
+//Question 5 
+
+PasDepasseOuvreValveA = NoPass[1], 
+NoPass[i:R] = ([i].a.ouvreValve  -> NoPass[i%N + 1]).
+
+PasDepasseFermeValveA  = NoPass[1], 
+NoPass[i:R] = ([i].a.fermeValve  -> NoPass[i%N + 1]).
+
+PasDepasseOuvreValveB = NoPass[1], 
+NoPass[i:R] = ([i].b.ouvreValve  -> NoPass[i%N + 1]).
+
+PasDepasseFermeValveB  = NoPass[1], 
+NoPass[i:R] = ([i].a.fermeValve  -> NoPass[i%N + 1]).
+
+
+PasDepasseCommenceEtiquetageA = NoPass[1], 
+NoPass[i:R] = ([i].a.commenceEtiquetage  -> NoPass[i%N + 1]).
+
+PasDepasseTermineEtiquetageA  = NoPass[1], 
+NoPass[i:R] = ([i].a.termineEtiquetage -> NoPass[i%N + 1]).
+
+PasDepasseCommenceEtiquetageB = NoPass[1], 
+NoPass[i:R] = ([i].b.commenceEtiquetage  -> NoPass[i%N + 1]).
+
+PasDepasseTermineEtiquetageB  = NoPass[1], 
+NoPass[i:R] = ([i].b.termineEtiquetage -> NoPass[i%N + 1]).
+
+
+ 
+
+
+||Confiturerie5 = ([i:R][j:S]:Bocal ||
+                                CValve || CEtiquetage  || 
+                                PValve || PEtiquetage  ||
+                                PasDepasseOuvreValveA || PasDepasseFermeValveA ||
+                                PasDepasseOuvreValveB || PasDepasseFermeValveB ||
+                                PasDepasseCommenceEtiquetageA|| PasDepasseTermineEtiquetageA ||
+                                PasDepasseCommenceEtiquetageB|| PasDepasseTermineEtiquetageB ). 
+      
+
+
+// Question 6 
+
+
+||Confiturerie6 = Confiturerie5 << {[i:R].a.{ouvreValve, remplit, fermeValve,  
+                                   commenceEtiquetage, etiquette, termineEtiquetage}}. 
+
+
+
+//Question 7 
+
+OrdreOuvreValve = O[1], 
+O[i:R] = ([i].a.ouvreValve -> [i].b.ouvreValve-> O[i%N+1]). 
+
+OrdreFermeValve = O[1], 
+O[i:R] = ([i].a.fermeValve -> [i].b.fermeValve-> O[i%N+1]).
+
+OrdreCommenceEtiquetage = O[1], 
+O[i:R] = ([i].a.commenceEtiquetage -> [i].b.commenceEtiquetage-> O[i%N+1]). 
+
+OrdreTermineEtiquetage = O[1], 
+O[i:R] = ([i].a.termineEtiquetage -> [i].b.termineEtiquetage -> O[i%N+1]).
+
+
+||Confiturerie7 = ([i:R][j:S]:Bocal ||
+                                CValve || CEtiquetage  || 
+                                PValve || PEtiquetage  ||
+                                OrdreOuvreValve || OrdreFermeValve ||
+                                OrdreCommenceEtiquetage ||  OrdreTermineEtiquetage || 
+                                PasDepasseOuvreValveA || PasDepasseFermeValveA ||
+                                PasDepasseOuvreValveB || PasDepasseFermeValveB ||
+                                PasDepasseCommenceEtiquetageA|| PasDepasseTermineEtiquetageA ||
+                                PasDepasseCommenceEtiquetageB|| PasDepasseTermineEtiquetageB 
+                           ) << {[i:R].a.{ouvreValve, remplit, fermeValve,  
+                                   commenceEtiquetage, etiquette, termineEtiquetage}}. 
+
+
+//Question 8 
+
+
+BocalT=  ( requeteValve -> ouvreValve -> remplit ->  fermeValve ->  
+         requeteEtiquetage -> commenceEtiquetage -> etiquette -> termineEtiquetage -> BocalT).
+
+
+ControleValve = C[0][0][0][0][1], 
+C[na:R0][nb:R0][wa:R0][wb:R0][t:RT] = 
+ ( when (wa < N) [i:R].a.requeteValve -> C[na][nb][wa+1][wb][t] | 
+    when (wb < N) [i:R].b.requeteValve -> C[na][nb][wa][wb+1][t]|
+      when (nb == 0 && na < N && wa > 0  && (wb == 0 || t == 1) ) 
+            [i:R].a.ouvreValve -> C[na+1][nb][wa-1][wb][t]| 
+       when (na > 0) [i:R].a.fermeValve -> C[na-1][nb][wa][wb][2] | 
+       when (na == 0 && nb < N &&  wb > 0 &&  (wa == 0 || t == 2) )
+              [i:R].b.ouvreValve-> C[na][nb+1][wa][wb-1][t]| 
+       when (nb > 0) [i:R].b.fermeValve -> C[na][nb-1][wa][wb][1]).  
+
+
+ControleEtiquetage = C[0][0][0][0][1], 
+C[na:R0][nb:R0][wa:R0][wb:R0][t:RT] = 
+ ( when (wa < N) [i:R].a.requeteEtiquetage -> C[na][nb][wa+1][wb][t] | 
+    when (wb < N) [i:R].b.requeteEtiquetage -> C[na][nb][wa][wb+1][t]|
+      when (nb == 0 && na < N && wa > 0  && (wb == 0 || t == 1) ) 
+            [i:R].a.commenceEtiquetage -> C[na+1][nb][wa-1][wb][t]| 
+       when (na > 0) [i:R].a.termineEtiquetage -> C[na-1][nb][wa][wb][2] | 
+       when (na == 0 && nb < N &&  wb > 0 &&  (wa == 0 || t == 2) )
+              [i:R].b.commenceEtiquetage -> C[na][nb+1][wa][wb-1][t]| 
+       when (nb > 0) [i:R].b.termineEtiquetage -> C[na][nb-1][wa][wb][1]).  
+
+
+
+||Confiturerie8 = ([i:R][j:S]:BocalT ||
+                                CValve || CEtiquetage  || 
+                                PValve || PEtiquetage  ||
+                                ControleValve || ControleEtiquetage ||
+                                PasDepasseOuvreValveA || PasDepasseFermeValveA ||
+                                PasDepasseOuvreValveB || PasDepasseFermeValveB ||
+                                PasDepasseCommenceEtiquetageA|| PasDepasseTermineEtiquetageA ||
+                                PasDepasseCommenceEtiquetageB|| PasDepasseTermineEtiquetageB  
+                           ) << {[i:R].a.{requeteValve, ouvreValve, remplit, fermeValve, requeteEtiquetage,  
+                                   commenceEtiquetage, etiquette, termineEtiquetage}, [i:R].b.{requeteValve,requeteEtiquetage}}. 
+
+
+// Question 9 
+
+BocalR=  ( requeteValve -> ouvreValve -> remplit ->  fermeValve ->  B1 |
+           rupture -> finRupture -> B0), 
+B0 = (requeteValve -> ouvreValve -> remplit ->  fermeValve ->  B1),
+B1 = (requeteEtiquetage -> commenceEtiquetage -> etiquette -> termineEtiquetage -> BocalR).
+
+Ravitaillement = ([i:R][j:S].rupture -> [i][j].approvisionnement -> [i][j].finRupture -> Ravitaillement). 
+
+
+
+
+||Confiturerie9 = ([i:R][j:S]:BocalR || Ravitaillement || 
+                                CValve || CEtiquetage  || 
+                                PValve || PEtiquetage  ||
+                                ControleValve || ControleEtiquetage ||
+                                PasDepasseOuvreValveA || PasDepasseFermeValveA ||
+                                PasDepasseOuvreValveB || PasDepasseFermeValveB ||
+                                PasDepasseCommenceEtiquetageA|| PasDepasseTermineEtiquetageA ||
+                                PasDepasseCommenceEtiquetageB|| PasDepasseTermineEtiquetageB  
+                           ) << {[i:R].a.{requeteValve, ouvreValve, remplit, fermeValve, requeteEtiquetage,  
+                                   commenceEtiquetage, etiquette, termineEtiquetage}, [i:R].b.{requeteValve,requeteEtiquetage}, 
+                                 [i:R][j:S].{ rupture,finRupture,approvisionnement}}. 
+
