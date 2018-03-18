@@ -1,3 +1,4 @@
+package confiturerie;
 
 public class Valves extends Ressource{
 

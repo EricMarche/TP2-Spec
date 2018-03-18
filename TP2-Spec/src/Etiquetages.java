@@ -1,4 +1,4 @@
-
+package confiturerie;
 public class Etiquetages extends Ressource {
 	
 	int nbEtiquetage;

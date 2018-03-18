@@ -1,4 +1,4 @@
-
+package confiturerie;
 public class Bocal extends Thread {
 	
 	
@@ -7,6 +7,10 @@ public class Bocal extends Thread {
 	static ControleEtiquetage controleEtiquetage;
 	static ControleValve controleValve;
 	static Ravitaillement ravitaillement;
+        
+        static int ordreValveLock = 1;
+        static int ordreEtiquetageLock = 1;
+        static S typeBlocalLock;
 	
 	S type;
 	int index;
@@ -14,8 +18,8 @@ public class Bocal extends Thread {
 	public Bocal(int nbValve, int nbEtiquetage, S type, int index) {
 		valve = new Valves(nbValve);
 		etiquetage = new Etiquetages(nbEtiquetage);
-		controleEtiquetage = new ControleEtiquetage();
-		controleValve = new ControleValve();
+		controleEtiquetage = new ControleEtiquetage(nbEtiquetage);
+		controleValve = new ControleValve(nbValve);
 		ravitaillement = new Ravitaillement();
 
 		this.index = index;
@@ -45,24 +49,30 @@ public class Bocal extends Thread {
 
 	
 	public void ouvreValve() {
-		int indexValve = -1;
-		while (indexValve == -1) {
-			synchronized (valve) {
-				indexValve = valve.prendre();
-				if (indexValve != -1) {
-					System.out.println(this.index + "." + this.type + ".OuvreValve ");
-					
-				}
-				else {
-					try {
-						Thread.sleep(500);
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
+            
+            int indexValve = -1;
+            while (indexValve == -1) {
+                                  
+                
+                    synchronized (valve) {
+
+                            indexValve = valve.prendre();
+                            if (indexValve != -1 ) {
+                                    System.out.println(this.index + "." + this.type + ".OuvreValve ");
+                                    ordreValveLock++; 
+                                    if (ordreValveLock==valve.nombreRessource()) ordreValveLock=1;
+                            }
+                            else {
+                                    /*try {
+                                            Thread.sleep(100);
+                                    }
+                                    catch(Exception e) {
+                                            e.printStackTrace();
+                                    }*/
+                            }
+                    }
+                
+            }
 	}
 	
 	public void remplit() {
@@ -77,7 +87,16 @@ public class Bocal extends Thread {
 	}
 	
 	public void commenceEtiquetage() {
-		int indexEtiquetage = -1;
+		
+                int etiquetageEnCours = -1;
+                
+                while (etiquetageEnCours != 1 ) {      
+                    synchronized (controleEtiquetage) {
+                        //controleEtiquetage.getProchaineEtiquetage() != this.index
+                    }
+                }
+                
+                int indexEtiquetage = -1;
 		while (indexEtiquetage == -1) {
 			synchronized (etiquetage) {
 				indexEtiquetage = etiquetage.prendre();
@@ -86,12 +105,12 @@ public class Bocal extends Thread {
 					
 				}
 				else {
-					try {
-						Thread.sleep(500);
+					/*try {
+				notify		Thread.sleep(100);
 					}
 					catch(Exception e) {
 						e.printStackTrace();
-					}
+					}*/
 				}
 			}
 		}

@@ -1,3 +1,4 @@
+package confiturerie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,4 +53,8 @@ public class Ressource {
 		
 		
 	}
+        
+        public int nombreRessource() {
+            return disponibilite.size();
+        }
 }
