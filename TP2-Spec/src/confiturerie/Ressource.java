@@ -54,7 +54,7 @@ public class Ressource {
 		
 	}
         
-        public int nombreRessource() {
-            return disponibilite.size();
-        }
+    public int nombreRessource() {
+        return disponibilite.size();
+    }
 }

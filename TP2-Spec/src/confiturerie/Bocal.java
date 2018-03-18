@@ -8,9 +8,9 @@ public class Bocal extends Thread {
 	static ControleValve controleValve;
 	static Ravitaillement ravitaillement;
         
-        static int ordreValveLock = 1;
-        static int ordreEtiquetageLock = 1;
-        static S typeBlocalLock;
+    static int ordreValveLock = 1;
+    static int ordreEtiquetageLock = 1;
+    static S typeBocalLock;
 	
 	S type;
 	int index;
@@ -50,29 +50,25 @@ public class Bocal extends Thread {
 	
 	public void ouvreValve() {
             
-            int indexValve = -1;
-            while (indexValve == -1) {
-                                  
-                
-                    synchronized (valve) {
-
-                            indexValve = valve.prendre();
-                            if (indexValve != -1 ) {
-                                    System.out.println(this.index + "." + this.type + ".OuvreValve ");
-                                    ordreValveLock++; 
-                                    if (ordreValveLock==valve.nombreRessource()) ordreValveLock=1;
-                            }
-                            else {
-                                    /*try {
-                                            Thread.sleep(100);
-                                    }
-                                    catch(Exception e) {
-                                            e.printStackTrace();
-                                    }*/
-                            }
-                    }
-                
-            }
+        int indexValve = -1;
+        while (indexValve == -1) {
+            synchronized (valve) {
+                indexValve = valve.prendre();
+                if (indexValve != -1 ) {
+                    System.out.println(this.index + "." + this.type + ".OuvreValve ");
+                    ordreValveLock++; 
+                    if (ordreValveLock==valve.nombreRessource()) ordreValveLock=1;
+                }
+                else {
+                        /*try {
+                                Thread.sleep(100);
+                        }
+                        catch(Exception e) {
+                                e.printStackTrace();
+                        }*/
+                }
+            }  
+        }
 	}
 	
 	public void remplit() {
