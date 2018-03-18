@@ -10,8 +10,12 @@ public class Bocal extends Thread {
         
     static int ordreValveLock = 1;
     static int ordreEtiquetageLock = 1;
-    static S typeBocalLock;
+    static S typeBocalLock = S.a;
+    static int indexValve = 1;
+    static int indexEtiquetage = 1;
 	
+   
+    
 	S type;
 	int index;
 	
@@ -33,23 +37,51 @@ public class Bocal extends Thread {
 		remplit();
 		fermeValve();
 		requeteEtiquetage();
+		commenceEtiquetage();
 		etiquette();
 		termineEtiquetage();
 	}
 	
 	public void requeteValve() {
-		System.out.println(this.index + "." + this.type + ".RequeteValve");
-		
+//		System.out.println(this.index + "." + this.type + ".RequeteValve");
+		while (this.type != typeBocalLock) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		while (this.index != indexValve) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void requeteEtiquetage() {
-		System.out.println(this.index + "." + this.type + ".RequeteEtiquette");
-		commenceEtiquetage();
+//		System.out.println(this.index + "." + this.type + ".RequeteEtiquette");
+		
+		while (this.type != typeBocalLock) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		while (this.index != indexEtiquetage) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	
 	public void ouvreValve() {
-            
+        
         int indexValve = -1;
         while (indexValve == -1) {
             synchronized (valve) {
@@ -57,7 +89,7 @@ public class Bocal extends Thread {
                 if (indexValve != -1 ) {
                     System.out.println(this.index + "." + this.type + ".OuvreValve ");
                     ordreValveLock++; 
-                    if (ordreValveLock==valve.nombreRessource()) ordreValveLock=1;
+                    if (ordreValveLock == valve.nombreRessource()) ordreValveLock=1;
                 }
                 else {
                         /*try {
@@ -72,27 +104,51 @@ public class Bocal extends Thread {
 	}
 	
 	public void remplit() {
-		System.out.println(this.index + "." + this.type + ".remplit");
+		System.out.println(this.index + "." + this.type + ".Remplit");
 	}
 	
 	public void fermeValve() {
 		synchronized(valve) {
 			valve.rendre();
 			System.out.println(this.index + "." + this.type + ".FermeValve");
+			prochainIndexValve();
+			
+		}
+
+
+		
+	}
+	
+	public void prochainIndexValve() {
+		if (confiturerie.Confiturerie.N == this.index) {
+			indexValve = 1;
+			switchType(this.type);
+		}
+		else
+			indexValve++;;
+	}
+	
+	public void prochainIndexEtiquetage() {
+		if (confiturerie.Confiturerie.N == this.index) {
+			indexEtiquetage = 1;
+			switchType(this.type);
+		}
+		else
+			indexEtiquetage++;;
+	}
+	
+	public void switchType(S type) {
+		if (type == S.a) {			
+			typeBocalLock = S.b;
+		}
+		else {
+			typeBocalLock = S.a;
 		}
 	}
 	
 	public void commenceEtiquetage() {
-		
-                int etiquetageEnCours = -1;
                 
-                while (etiquetageEnCours != 1 ) {      
-                    synchronized (controleEtiquetage) {
-                        //controleEtiquetage.getProchaineEtiquetage() != this.index
-                    }
-                }
-                
-                int indexEtiquetage = -1;
+        int indexEtiquetage = -1;
 		while (indexEtiquetage == -1) {
 			synchronized (etiquetage) {
 				indexEtiquetage = etiquetage.prendre();
@@ -120,7 +176,9 @@ public class Bocal extends Thread {
 		synchronized(etiquetage) {
 			etiquetage.rendre();
 			System.out.println(this.index + "." + this.type + ".TermineEtiquetage");
+			prochainIndexEtiquetage();
 		}
+
 	}
 	
 	public void rupture() {

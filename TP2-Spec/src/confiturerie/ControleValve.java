@@ -11,12 +11,12 @@ public class ControleValve {
         return valveEnCours ;
     }
     
-    public int getProchaineValve() {        
+    public void setProchaineValve() {        
         if (maxValve == valveEnCours) {
-            return 1;
+        	valveEnCours = 1;
         }
         else {
-            return valveEnCours + 1;
+        	valveEnCours++;
         }        
     }
 }

@@ -7,9 +7,6 @@ package confiturerie;
 
 
 public class Confiturerie {
-	
-
-
 	static final int N = 3; //Le nombre de bocaux
 	static final int T = 2; //Le nombre boolean
 	static final int V = 2; //le nombre de valve
