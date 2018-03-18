@@ -5,22 +5,30 @@
  */
 package confiturerie;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Confiturerie {
 	static final int N = 3; //Le nombre de bocaux
-	static final int T = 2; //Le nombre boolean
 	static final int V = 2; //le nombre de valve
 	static final int E = 2; //Le nombre d'étiquetage
+	static final int QUANTITE_A = 1000;
+	static final int QUANTITE_B = 1000;
 	
 	
 	public static void main(String[] args) {
+		
+		List<Bocal> threads = new ArrayList<>();
 		for (int i = 1; i <= N; i ++) {
-			Bocal a = new Bocal(V, E, S.a, i);
-			Bocal b = new Bocal(V, E, S.b, i);
+			Bocal a = new Bocal(V, E, S.a, i, QUANTITE_A);
+			Bocal b = new Bocal(V, E, S.b, i, QUANTITE_B);
 			
-			a.start();
-			b.start();
-			
+			threads.add(a);
+			threads.add(b);
+		}
+		
+		for(Bocal bocal: threads) {
+			bocal.start();
 		}
 	}
 }
