@@ -12,8 +12,8 @@ public class Confiturerie {
 	static final int N = 3; //Le nombre de bocaux
 	static final int V = 2; //le nombre de valve
 	static final int E = 2; //Le nombre d'étiquetage
-	static final int QUANTITE_A = 1000;
-	static final int QUANTITE_B = 1000;
+	static final int QUANTITE_A = 1000; //La quantité en millilitres de confiture A dans le système. Une fois la quantité écoulée, on tombe en rupture
+	static final int QUANTITE_B = 1000; //La quantité en millilitres de confiture B dans le système. Une fois la quantité écoulée, on tombe en rupture
 	
 	
 	public static void main(String[] args) {

@@ -1,4 +1,7 @@
 Eric Marchessault (111 156 117)
 Sebastien Labrie (111 086 636)
 
-Nous n'avons pas d'interface graphique. Donc si vous voulez changer des variables de bocaux, valve ou etiquetage. Il faut changer les constante du fichier Confiturerie.java. Nous avons garder les noms des variable du premier TP. C'est-à-dire N, V, E
+Nous n'avons pas d'interface graphique. Donc si vous voulez changer des variables de bocaux, valve ou étiquetage. Il faut changer les constante du fichier "Confiturerie.java". Nous avons garder les noms des variable du premier TP. C'est-à-dire N, V, E.
+
+Nous avons définis des quantités pour chaque type de confiture. Après chaque remplissage de bocal, la quantité diminue de 500 millilitres. Après 2 remplissages, le système tombe en rupture et on doit réapprovisionner. La quantités pour les bocals de type A et B est modifiable, via les variables QUANTITE_A et QUANTITE_B dans le fichier "Confiturerie.java"
+ 

@@ -1,10 +1,7 @@
 package confiturerie;
-public class Bocal extends Thread {
-	
-	
+public class Bocal extends Thread {	
 	static Ressource valve;
 	static Ressource etiquetage;
-	static Ravitaillement ravitaillement;
         
     static int ordreValveLock = 1;
     static int ordreEtiquetageLock = 1;
@@ -25,10 +22,12 @@ public class Bocal extends Thread {
 	S type;
 	int index;
 	
+	//**************************
+	//Constructeur du bocal
+	//**************************
 	public Bocal(int nbValve, int nbEtiquetage, S type, int index, int quantite) {
 		valve = new Valves(nbValve);
-		etiquetage = new Etiquetages(nbEtiquetage);
-		ravitaillement = new Ravitaillement();
+		etiquetage = new Etiquetages(nbEtiquetage);		
 
 		this.index = index;
 		this.type = type;
@@ -44,6 +43,9 @@ public class Bocal extends Thread {
 		
 	}
 	
+	//**************************
+	//Fonction run du thread
+	//**************************
 	public void run() {
 		requeteValve();
 		ouvreValve();
@@ -55,6 +57,9 @@ public class Bocal extends Thread {
 		termineEtiquetage();
 	}
 	
+	//**************************
+	//Action requête valve
+	//**************************
 	public void requeteValve() {
 		System.out.println(this.index + "." + this.type + ".RequeteValve");
 		while (this.type != typeBocalLock) {
@@ -73,6 +78,9 @@ public class Bocal extends Thread {
 		}
 	}
 	
+	//**************************
+	//Action requête étiquage
+	//**************************	
 	public void requeteEtiquetage() {
 		System.out.println(this.index + "." + this.type + ".RequeteEtiquette");
 		
@@ -91,7 +99,11 @@ public class Bocal extends Thread {
 			}
 		}
 	}
+
 	
+	//**************************
+	//Action ouvre valve
+	//**************************	
 	public void ouvreValve() {
 		switch(this.type) {
 			case a:
@@ -136,10 +148,16 @@ public class Bocal extends Thread {
         }
 	}
 	
+	//**************************
+	//Action remplit
+	//**************************		
 	public void remplit() {
 		System.out.println(this.index + "." + this.type + ".Remplit");
 	}
 	
+	//**************************
+	//Action ferme valve
+	//**************************		
 	public void fermeValve() {
 		switch(this.type) {
 			case a:
@@ -163,6 +181,9 @@ public class Bocal extends Thread {
 		
 	}
 	
+	//**************************
+	//Action qui permet de controler l'ordre des bocaux dans les valves
+	//**************************		
 	public void controleValve() {
 		if (confiturerie.Confiturerie.N == this.index) {
 			indexValve = 1;
@@ -172,6 +193,9 @@ public class Bocal extends Thread {
 			indexValve++;;
 	}
 	
+	//**************************
+	//Action qui permet de controler l'ordre des bocaux dans l'étiquetage
+	//**************************	
 	public void controleEtiquetage() {
 		if (confiturerie.Confiturerie.N == this.index) {
 			indexEtiquetage = 1;
@@ -181,6 +205,9 @@ public class Bocal extends Thread {
 			indexEtiquetage++;;
 	}
 	
+	//**************************
+	//Action qui permet d'alterner les bocaux entre A et B
+	//**************************		
 	public void switchType(S type) {
 		if (type == S.a) {			
 			typeBocalLock = S.b;
@@ -190,6 +217,9 @@ public class Bocal extends Thread {
 		}
 	}
 	
+	//**************************
+	//Action commence étiquetage
+	//**************************		
 	public void commenceEtiquetage() {
                 
         int indexEtiquetage = -1;
@@ -212,10 +242,16 @@ public class Bocal extends Thread {
 		}
 	}
 	
+	//**************************
+	//Action étiquetage
+	//**************************	
 	public void etiquette() {
 		System.out.println(this.index + "." + this.type + ".Etiquette");
 	}
 	
+	//**************************
+	//Action termine étiquetage
+	//**************************	
 	public void termineEtiquetage() {
 		synchronized(etiquetage) {
 			etiquetage.rendre();
@@ -225,10 +261,16 @@ public class Bocal extends Thread {
 
 	}
 	
+	//**************************
+	//Action de la rupture
+	//**************************	
 	public void rupture(S type) {
 		System.out.println(this.index + "." + type + ".rupture");
 	}
 	
+	//**************************
+	//Action du ravitaillement 
+	//**************************		
 	public void ravitaillement(S type) {
 		System.out.println(this.index + "." + type + ".approvisionnement");
 		if (type == S.a) {
@@ -240,6 +282,9 @@ public class Bocal extends Thread {
 		
 	}
 	
+	//**************************
+	//Action de la fin de la rupture
+	//**************************		
 	public void finRupture(S type) {
 		System.out.println(this.index + "." + type + ".finRupture");
 		
